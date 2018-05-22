@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cx.dao.CompanyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cx.model.CompanyInfo">
+    <result column="userId" jdbcType="VARCHAR" property="userid" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyname" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="comAddress" jdbcType="VARCHAR" property="comaddress" />
+    <result column="phoneNumber" jdbcType="VARCHAR" property="phonenumber" />
+    <result column="comDescribe" jdbcType="VARCHAR" property="comdescribe" />
+    <result column="website" jdbcType="VARCHAR" property="website" />
+    <result column="photoUrl" jdbcType="VARCHAR" property="photourl" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="outTime" jdbcType="VARCHAR" property="outtime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cx.model.CompanyInfo">
+    <result column="createTime" jdbcType="VARBINARY" property="createtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+   userId, companyName, province, city, area, comAddress, phoneNumber, comDescribe,
+    website, photoUrl, status, outTime, updateTime
+  </sql>
+  <sql id="Blob_Column_List">
+    createTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from companyTable
+    where companyId = #{companyid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from companyTable
+    where companyId = #{companyid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.cx.model.CompanyInfo">
+    insert into companyTable (companyId, userId, companyName, 
+      province, city, area, 
+      comAddress, phoneNumber, comDescribe, 
+      website, photoUrl, status, 
+      outTime, updateTime, createTime
+      )
+    values (#{companyid,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, #{companyname,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{comaddress,jdbcType=VARCHAR}, #{phonenumber,jdbcType=VARCHAR}, #{comdescribe,jdbcType=VARCHAR}, 
+      #{website,jdbcType=VARCHAR}, #{photourl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{outtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=VARBINARY}
+      )
+  </insert>
+  <insert id="insert" parameterType="com.cx.model.CompanyInfo">
+    insert into companyTable
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="companyid != null">
+        companyId,
+      </if>
+      <if test="companyname != null">
+        companyName,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="comaddress != null">
+        comAddress,
+      </if>
+      <if test="phonenumber != null">
+        phoneNumber,
+      </if>
+      <if test="comdescribe != null">
+        comDescribe,
+      </if>
+      <if test="website != null">
+        website,
+      </if>
+      <if test="photourl != null">
+        photoUrl,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="outtime != null">
+        outTime,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="companyid != null">
+        #{companyid,jdbcType=INTEGER},
+      </if>
+      <if test="companyname != null">
+        #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="comaddress != null">
+        #{comaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null">
+        #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="comdescribe != null">
+        #{comdescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null">
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="photourl != null">
+        #{photourl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="outtime != null">
+        #{outtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=VARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cx.model.CompanyInfo">
+    update companyTable
+    <set>
+      <if test="companyname != null">
+        companyName = #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="comaddress != null">
+        comAddress = #{comaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null">
+        phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="comdescribe != null">
+        comDescribe = #{comdescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null">
+        website = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="photourl != null">
+        photoUrl = #{photourl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="outtime != null">
+        outTime = #{outtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=VARBINARY},
+      </if>
+    </set>
+    where companyId = #{companyid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cx.model.CompanyInfo">
+    update companyTable
+    set
+      companyName = #{companyname,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      comAddress = #{comaddress,jdbcType=VARCHAR},
+      phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      comDescribe = #{comdescribe,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR},
+      photoUrl = #{photourl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      outTime = #{outtime,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      createTime = #{createtime,jdbcType=VARBINARY}
+    where companyId = #{companyid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cx.model.CompanyInfo">
+    update companyTable
+    set
+      companyName = #{companyname,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      comAddress = #{comaddress,jdbcType=VARCHAR},
+      phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      comDescribe = #{comdescribe,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR},
+      photoUrl = #{photourl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      outTime = #{outtime,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where companyId = #{companyid,jdbcType=INTEGER}
+  </update>
+</mapper>

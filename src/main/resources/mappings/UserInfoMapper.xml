@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cx.dao.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cx.model.UserInfo">
+    <id column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="passWord" jdbcType="VARCHAR" property="password" />
+    <result column="isDel" jdbcType="VARCHAR" property="isdel" />
+    <result column="createTime" jdbcType="VARCHAR" property="createtime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+      userName, passWord, createTime
+  </sql>
+  <!--获取用户角色-->
+  <select id="getRoles" parameterType="String" resultType="String">
+          select
+          r.roleName
+          FROM
+          `USER` u,
+          Role r,
+          role_user ru
+          WHERE u.userId=ru.userId
+          AND r.rId = ru.rId
+          AND u.userPhoneNum=#{userPhoneNum}
+    </select>
+
+  <!--获取用户权限-->
+  <select id="getPermissions" parameterType="String" resultType="String">
+        SELECT
+        p.plevel
+        FROM
+        Role r,
+        permissions p,
+        role_permission rp
+        WHERE p.pId=rp.pId
+        AND r.rId=rp.rId
+        AND r.rId in(
+        select
+        r.rId
+        FROM
+        `USER` u,
+        Role r,
+        role_user ru
+        WHERE u.userId=ru.userId
+        AND r.rId = ru.rId
+        AND u.userPhoneNum=#{userPhoneNum})
+    </select>
+
+  <!-- 获取用户账户查询用户是否存在 -->
+  <select id="isUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from userInfo
+    where userName = #{username,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 新增用户 -->
+  <insert id="inUser" parameterType="com.cx.model.UserInfo">
+    insert into userInfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="password != null">
+        passWord,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 更新用户密码和状态 -->
+  <update id="upUserInfo" parameterType="com.cx.model.UserInfo">
+    update userInfo
+    <set>
+      <if test="password != null">
+        passWord = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null">
+        isDel = #{isdel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userName = #{username,jdbcType=VARCHAR}
+  </update>
+
+</mapper>
